@@ -18,7 +18,7 @@ export default function Products() {
   });
 
   const fetchProducts = async () => {
-    const res = await API.get("/api/products");
+    const res = await API.get("/products");
     setProducts(res.data);
   };
 
@@ -53,9 +53,9 @@ export default function Products() {
     form.gallery.forEach((img) => data.append("gallery", img));
 
     if (editing) {
-      await API.put(`/api/products/${editing.id}`, data);
+      await API.put(`/products/${editing.id}`, data);
     } else {
-      await API.post("/api/products", data);
+      await API.post("/products", data);
     }
 
     setEditing(null);
@@ -103,7 +103,7 @@ export default function Products() {
 
   // 🔴 DELETE
   const deleteProduct = async (id) => {
-    await API.delete(`/api/products/${id}`);
+    await API.delete(`/products/${id}`);
     setEditing(null);
     fetchProducts();
   };

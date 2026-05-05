@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://ashbackend-production.up.railway.app",
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export default API;

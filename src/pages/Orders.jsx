@@ -6,7 +6,7 @@ export default function Orders() {
   const [selectedOrder, setSelectedOrder] = useState(null); // 🔥 popup
 
   const fetchOrders = async () => {
-    const res = await API.get("/api/orders");
+    const res = await API.get("/orders");
     setOrders(res.data);
   };
 
@@ -15,7 +15,7 @@ export default function Orders() {
   }, []);
 
   const updateStatus = async (id, status) => {
-    await API.put(`/api/orders/${id}`, { status });
+    await API.put(`/orders/${id}`, { status });
     fetchOrders();
   };
 
@@ -41,7 +41,7 @@ export default function Orders() {
       if (!confirmDelete) return;
     
       try {
-        await API.delete(`/api/orders/${id}`);
+        await API.delete(`/orders/${id}`);
         fetchOrders(); // refresh
       } catch (err) {
         console.error(err);

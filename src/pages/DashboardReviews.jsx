@@ -6,7 +6,7 @@ const DashboardReviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await apiClient.get("/api/reviews");
+      const res = await apiClient.get("/reviews");
       setReviews(res.data);
     } catch (err) {
       console.log(err);
@@ -21,7 +21,7 @@ const DashboardReviews = () => {
     if (!window.confirm("Delete review?")) return;
 
     try {
-      await apiClient.delete(`/api/reviews/${id}`);
+      await apiClient.delete(`/reviews/${id}`);
       fetchReviews();
     } catch (err) {
       console.log(err);
