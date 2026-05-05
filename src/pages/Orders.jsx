@@ -3,7 +3,7 @@ import API from "../services/api";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null); // 🔥 popup
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const fetchOrders = async () => {
     const res = await API.get("/orders");
@@ -21,75 +21,76 @@ export default function Orders() {
 
   const resolveImage = (img) => {
     if (!img) return null;
-  
-    if (img.startsWith("http")) return img; // Supabase
+
+    if (img.startsWith("http")) return img;
     if (img.startsWith("data:image")) return img;
-  
+
+    if (img.startsWith("/uploads")) {
+      return `https://ashbackend-production.up.railway.app${img}`;
+    }
+
     return `https://ashbackend-production.up.railway.app/uploads/${img}`;
   };
-  console.log("ORDERS:", orders);
+
   const doneOrders = orders.filter(o => o.status === "Done");
 
-    const totalRevenue = doneOrders.reduce((sum, o) => {
-      return sum + Number(o.totalPrice || 0) + 60;
-    }, 0);
+  const totalRevenue = doneOrders.reduce((sum, o) => {
+    return sum + Number(o.totalPrice || 0) + 60;
+  }, 0);
 
-    const totalOrders = orders.length;
-    const doneCount = doneOrders.length;
-    const deleteOrder = async (id) => {
-      const confirmDelete = window.confirm("Are you sure you want to delete this order?");
-      if (!confirmDelete) return;
-    
-      try {
-        await API.delete(`/orders/${id}`);
-        fetchOrders(); // refresh
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  const totalOrders = orders.length;
+  const doneCount = doneOrders.length;
+
+  const deleteOrder = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+    if (!confirmDelete) return;
+
+    try {
+      await API.delete(`/orders/${id}`);
+      fetchOrders();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    
     <div>
       <div className="grid grid-cols-3 gap-4 mb-6">
 
-      <div className="bg-white p-4 rounded-xl shadow">
-        <h3>Total Orders</h3>
-        <p className="text-xl font-bold">{totalOrders}</p>
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3>Total Orders</h3>
+          <p className="text-xl font-bold">{totalOrders}</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3>Done Orders</h3>
+          <p className="text-xl font-bold">{doneCount}</p>
+        </div>
+
+        <div className="bg-white p-4 rounded-xl shadow">
+          <h3>Total Revenue</h3>
+          <p className="text-xl font-bold">{totalRevenue} EGP</p>
+        </div>
+
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow">
-        <h3>Done Orders</h3>
-        <p className="text-xl font-bold">{doneCount}</p>
-      </div>
-
-      <div className="bg-white p-4 rounded-xl shadow">
-        <h3>Total Revenue</h3>
-        <p className="text-xl font-bold">{totalRevenue} EGP</p>
-      </div>
-
-      </div>
       <h1 className="text-2xl font-bold mb-6">Orders</h1>
 
       <div className="grid gap-6">
         {orders.map((order) => (
           <div
             key={order.id}
-            onClick={() => setSelectedOrder(order)} // 🔥 click
+            onClick={() => setSelectedOrder(order)}
             className="bg-white/70 backdrop-blur-lg shadow-xl rounded-2xl p-5 flex justify-between items-center hover:scale-[1.01] transition cursor-pointer"
           >
             <div>
-              <h2 className="font-bold text-lg">
-                {order.customerName}
-              </h2>
-
+              <h2 className="font-bold text-lg">{order.customerName}</h2>
               <p>{order.phone}</p>
 
               <p className="text-sm text-gray-600 mt-1">
                 Payment:{" "}
                 <span className="font-semibold">
-                  {order.payment_method === "instapay"
-                    ? "InstaPay"
-                    : "Cash"}
+                  {order.payment_method === "instapay" ? "InstaPay" : "Cash"}
                 </span>
               </p>
 
@@ -102,7 +103,7 @@ export default function Orders() {
               resolveImage(order.paymentScreenshot) && (
                 <img
                   src={resolveImage(order.paymentScreenshot)}
-                  alt="payment"
+                  alt="payment screenshot"
                   className="w-24 h-24 object-cover rounded-xl shadow"
                 />
               )}
@@ -127,12 +128,14 @@ export default function Orders() {
               >
                 Ship
               </button>
+
               <button
                 onClick={() => updateStatus(order.id, "Done")}
                 className="bg-purple-500 text-white px-4 py-1 rounded-full hover:scale-105 transition"
               >
                 Done
               </button>
+
               <button
                 onClick={() => deleteOrder(order.id)}
                 className="bg-red-500 text-white px-4 py-1 rounded-full hover:scale-105 transition"
@@ -144,7 +147,6 @@ export default function Orders() {
         ))}
       </div>
 
-      {/* 🔥 POPUP */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-[500px] max-h-[80vh] overflow-y-auto shadow-2xl">
@@ -153,7 +155,6 @@ export default function Orders() {
               Order #{selectedOrder.id}
             </h2>
 
-            {/* 👤 Customer */}
             <div className="mb-4">
               <p><b>Name:</b> {selectedOrder.customerName}</p>
               <p><b>Phone:</b> {selectedOrder.phone}</p>
@@ -161,7 +162,6 @@ export default function Orders() {
               <p><b>Address:</b> {selectedOrder.address}</p>
             </div>
 
-            {/* 💳 Payment */}
             <div className="mb-4">
               <p><b>Payment:</b> {selectedOrder.payment_method}</p>
 
@@ -169,20 +169,17 @@ export default function Orders() {
                 resolveImage(selectedOrder.paymentScreenshot) && (
                   <img
                     src={resolveImage(selectedOrder.paymentScreenshot)}
+                    alt="payment screenshot"
                     className="w-full rounded-xl mt-2"
                   />
                 )}
             </div>
 
-            {/* 🛒 Items */}
             <div className="mb-4">
               <h3 className="font-bold mb-2">Items</h3>
 
               {selectedOrder.items?.map((item, i) => (
-                <div
-                  key={i}
-                  className="border-b py-2 text-sm"
-                >
+                <div key={i} className="border-b py-2 text-sm">
                   <p>{item.name}</p>
                   <p>Size: {item.size}</p>
                   <p>Qty: {item.quantity}</p>
@@ -190,6 +187,7 @@ export default function Orders() {
                 </div>
               ))}
             </div>
+
             {selectedOrder.promoCode && (
               <div>
                 <p><b>Promo Code:</b> {selectedOrder.promoCode}</p>
@@ -197,13 +195,10 @@ export default function Orders() {
               </div>
             )}
 
-            {/* 💰 Total */}
             <p className="font-bold text-lg">
-            Total: {Number(selectedOrder.totalPrice) + 60} EGP
+              Total: {Number(selectedOrder.totalPrice) + 60} EGP
             </p>
-            
 
-            {/* ❌ Close */}
             <button
               onClick={() => setSelectedOrder(null)}
               className="mt-4 w-full bg-gray-200 py-2 rounded-xl"
@@ -216,5 +211,4 @@ export default function Orders() {
       )}
     </div>
   );
-  
 }
