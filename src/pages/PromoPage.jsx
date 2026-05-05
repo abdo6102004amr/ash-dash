@@ -19,7 +19,7 @@ const PromoPage = () => {
   // 🔄 Fetch Promos
   const fetchPromos = async () => {
     try {
-      const res = await API.get("/promo"); // ✅ بدون /api
+      const res = await API.get("/promo");
       setPromos(res.data);
     } catch (err) {
       console.log("FETCH ERROR:", err);
@@ -46,7 +46,7 @@ const PromoPage = () => {
         end_date: form.end_date || null,
       };
 
-      await API.post("/promo", cleanForm); // ✅
+      await API.post("/promo", cleanForm);
 
       setForm({
         code: "",
@@ -73,7 +73,7 @@ const PromoPage = () => {
     if (!window.confirm("Delete promo?")) return;
 
     try {
-      await API.delete(`/promo/${id}`); // ✅
+      await API.delete(`/promo/${id}`);
       fetchPromos();
     } catch (err) {
       console.log("DELETE ERROR:", err);
@@ -81,19 +81,22 @@ const PromoPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Promo Codes</h1>
+    <div className="p-4 md:p-6">
 
-      {/* FORM */}
+      <h1 className="text-xl md:text-2xl font-bold mb-6">
+        Promo Codes
+      </h1>
+
+      {/* ================= FORM ================= */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-lg p-4 mb-6 grid grid-cols-2 gap-4"
+        className="bg-white shadow-md rounded-lg p-4 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4"
       >
         <input
           placeholder="Code"
           value={form.code}
           onChange={(e) => setForm({ ...form, code: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         />
 
         <select
@@ -107,7 +110,7 @@ const PromoPage = () => {
               bundle_get: "",
             })
           }
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         >
           <option value="percentage">Percentage %</option>
           <option value="fixed">Fixed Amount</option>
@@ -122,7 +125,7 @@ const PromoPage = () => {
             onChange={(e) =>
               setForm({ ...form, discount_value: e.target.value })
             }
-            className="border p-2 rounded"
+            className="border p-2 rounded w-full"
           />
         )}
 
@@ -133,7 +136,7 @@ const PromoPage = () => {
             onChange={(e) =>
               setForm({ ...form, discount_value: e.target.value })
             }
-            className="border p-2 rounded"
+            className="border p-2 rounded w-full"
           />
         )}
 
@@ -145,7 +148,7 @@ const PromoPage = () => {
               onChange={(e) =>
                 setForm({ ...form, bundle_buy: e.target.value })
               }
-              className="border p-2 rounded"
+              className="border p-2 rounded w-full"
             />
 
             <input
@@ -154,7 +157,7 @@ const PromoPage = () => {
               onChange={(e) =>
                 setForm({ ...form, bundle_get: e.target.value })
               }
-              className="border p-2 rounded"
+              className="border p-2 rounded w-full"
             />
           </>
         )}
@@ -163,39 +166,39 @@ const PromoPage = () => {
           placeholder="Min Order"
           value={form.min_order}
           onChange={(e) => setForm({ ...form, min_order: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         />
 
         <input
           placeholder="Usage Limit"
           value={form.usage_limit}
           onChange={(e) => setForm({ ...form, usage_limit: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         />
 
         <input
           type="datetime-local"
           value={form.start_date}
           onChange={(e) => setForm({ ...form, start_date: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         />
 
         <input
           type="datetime-local"
           value={form.end_date}
           onChange={(e) => setForm({ ...form, end_date: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full"
         />
 
-        <button className="col-span-2 bg-black text-white py-2 rounded">
+        <button className="col-span-1 md:col-span-2 bg-black text-white py-2 rounded">
           Add Promo
         </button>
       </form>
 
-      {/* TABLE */}
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
-        <table className="w-full text-left">
-          <thead className="bg-gray-100">
+      {/* ================= TABLE ================= */}
+      <div className="bg-white shadow-md rounded-lg overflow-x-auto">
+        <table className="min-w-[800px] w-full text-left">
+          <thead className="bg-gray-100 text-sm md:text-base">
             <tr>
               <th className="p-3">Code</th>
               <th className="p-3">Type</th>
@@ -209,7 +212,7 @@ const PromoPage = () => {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="text-sm md:text-base">
             {promos.map((p) => (
               <tr key={p.id} className="border-t">
                 <td className="p-3 font-semibold">{p.code}</td>
@@ -222,7 +225,7 @@ const PromoPage = () => {
 
                 <td className="p-3">
                   <span
-                    className={`px-2 py-1 rounded text-sm ${
+                    className={`px-2 py-1 rounded text-xs md:text-sm ${
                       p.active
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
@@ -235,7 +238,7 @@ const PromoPage = () => {
                 <td className="p-3">
                   <button
                     onClick={() => deletePromo(p.id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    className="bg-red-500 text-white px-3 py-1 rounded text-sm"
                   >
                     Delete
                   </button>
@@ -245,6 +248,7 @@ const PromoPage = () => {
           </tbody>
         </table>
       </div>
+
     </div>
   );
 };
