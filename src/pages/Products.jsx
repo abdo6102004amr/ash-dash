@@ -11,10 +11,11 @@ export default function Products() {
     cover: null,
     gallery: [],
 
-    sizes: [
-      { size: "70 ml", price: "", soldOut: false },
-      { size: "250 ml", price: "", soldOut: false },
-    ],
+   sizes: [
+  { size: "10 ml", price: "", soldOut: false },
+  { size: "100 ml", price: "", soldOut: false },
+  { size: "250 ml", price: "", soldOut: false },
+  ],
   });
 
   const fetchProducts = async () => {
@@ -66,9 +67,10 @@ export default function Products() {
       cover: null,
       gallery: [],
       sizes: [
-        { size: "70 ml", price: "", soldOut: false },
-        { size: "250 ml", price: "", soldOut: false },
-      ],
+  { size: "10 ml", price: "", soldOut: false },
+  { size: "100 ml", price: "", soldOut: false },
+  { size: "250 ml", price: "", soldOut: false },
+  ],
     });
 
     fetchProducts();
@@ -92,12 +94,14 @@ export default function Products() {
       cover: null,
       gallery: [],
      
-      sizes: sizes.length
-        ? sizes
-        : [
-            { size: "70 ml", price: "", soldOut: false },
-            { size: "250 ml", price: "", soldOut: false },
-          ],
+      sizes: 
+     sizes.length
+  ? sizes
+  : [
+      { size: "10 ml", price: "", soldOut: false },
+      { size: "100 ml", price: "", soldOut: false },
+      { size: "250 ml", price: "", soldOut: false },
+    ],
     });
   };
 
