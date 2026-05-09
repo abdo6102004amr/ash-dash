@@ -13,7 +13,7 @@ export default function Products() {
 
    sizes: [
   { size: "10 ml", price: "", soldOut: false },
-  { size: "100 ml", price: "", soldOut: false },
+  { size: "75 ml", price: "", soldOut: false },
   { size: "250 ml", price: "", soldOut: false },
   ],
   });
@@ -68,7 +68,7 @@ export default function Products() {
       gallery: [],
       sizes: [
   { size: "10 ml", price: "", soldOut: false },
-  { size: "100 ml", price: "", soldOut: false },
+  { size: "75 ml", price: "", soldOut: false },
   { size: "250 ml", price: "", soldOut: false },
   ],
     });
@@ -99,7 +99,7 @@ export default function Products() {
   ? sizes
   : [
       { size: "10 ml", price: "", soldOut: false },
-      { size: "100 ml", price: "", soldOut: false },
+      { size: "75 ml", price: "", soldOut: false },
       { size: "250 ml", price: "", soldOut: false },
     ],
     });
