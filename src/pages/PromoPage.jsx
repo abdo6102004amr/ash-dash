@@ -14,6 +14,8 @@ const PromoPage = () => {
     end_date: "",
     bundle_buy: "",
     bundle_get: "",
+    buy_qty: 1,
+    get_qty: 1,
   });
 
   // 🔄 Fetch Promos
@@ -40,6 +42,8 @@ const PromoPage = () => {
         discount_value: parseFloat(form.discount_value) || 0,
         min_order: parseFloat(form.min_order) || 0,
         usage_limit: parseInt(form.usage_limit) || 0,
+        buy_qty: parseInt(form.buy_qty) || 1,
+        get_qty: parseInt(form.get_qty) || 1,
         bundle_buy: form.bundle_buy || null,
         bundle_get: form.bundle_get || null,
         start_date: form.start_date || null,
@@ -58,6 +62,8 @@ const PromoPage = () => {
         end_date: "",
         bundle_buy: "",
         bundle_get: "",
+        buy_qty: 1,
+        get_qty: 1,
       });
 
       fetchPromos();
@@ -159,6 +165,25 @@ const PromoPage = () => {
               }
               className="border p-2 rounded w-full"
             />
+             <input
+            placeholder="Buy Qty"
+            type="number"
+            value={form.buy_qty}
+            onChange={(e) =>
+              setForm({ ...form, buy_qty: e.target.value })
+            }
+            className="border p-2 rounded w-full"
+          />
+          
+          <input
+            placeholder="Get Qty"
+            type="number"
+            value={form.get_qty}
+            onChange={(e) =>
+              setForm({ ...form, get_qty: e.target.value })
+            }
+            className="border p-2 rounded w-full"
+          />
           </>
         )}
 
@@ -189,7 +214,7 @@ const PromoPage = () => {
           onChange={(e) => setForm({ ...form, end_date: e.target.value })}
           className="border p-2 rounded w-full"
         />
-
+       
         <button className="col-span-1 md:col-span-2 bg-black text-white py-2 rounded">
           Add Promo
         </button>
@@ -205,6 +230,8 @@ const PromoPage = () => {
               <th className="p-3">Value</th>
               <th className="p-3">Buy</th>
               <th className="p-3">Get</th>
+              <th className="p-3">Buy Qty</th>
+              <th className="p-3">Get Qty</th>
               <th className="p-3">Used</th>
               <th className="p-3">Limit</th>
               <th className="p-3">Status</th>
@@ -220,6 +247,8 @@ const PromoPage = () => {
                 <td className="p-3">{p.discount_value || "-"}</td>
                 <td className="p-3">{p.bundle_buy || "-"}</td>
                 <td className="p-3">{p.bundle_get || "-"}</td>
+                <td className="p-3">{p.buy_qty || 1}</td>
+                <td className="p-3">{p.get_qty || 1}</td>
                 <td className="p-3">{p.used_count}</td>
                 <td className="p-3">{p.usage_limit}</td>
 
